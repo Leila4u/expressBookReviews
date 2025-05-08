@@ -5,8 +5,7 @@ const regd_users = express.Router();
 
 let users = [];
 
-const isValid = (username)=> { //returns boolean
-//write code to check is the username is valid
+const isValid = (username)=> { 
   let userswithsamename = users.filter((user) => {
         return user.username === username
     });
@@ -17,8 +16,7 @@ const isValid = (username)=> { //returns boolean
     }
 }
 
-const authenticatedUser = (username,password) => { //returns boolean
-//write code to check if username and password match the one we have in records.
+const authenticatedUser = (username,password) => { 
 let validUsers = users.filter((user) => {
         return (user.username === username && user.password === password)
     });
@@ -29,9 +27,7 @@ let validUsers = users.filter((user) => {
     }
 };
 
-//only registered users can login
 regd_users.post("/login", (req,res) => {
-  //Write your code here
     const username = req.body.username;
     const password = req.body.password;
 
@@ -53,7 +49,6 @@ regd_users.post("/login", (req,res) => {
   }
 });
 
-// Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
     const user = req.session.authorization.username;
     const review = req.body.review;
@@ -66,12 +61,11 @@ regd_users.put("/auth/review/:isbn", (req, res) => {
   }
 });
 
-// Delete a review
 regd_users.delete("/auth/review/:isbn", (req, res) => {
   const user = req.session.authorization.username;
   const isbn = req.params.isbn;
   if (!books[isbn]) {
-    res.status(400).json({ message: "invalid ISBN." });
+    res.status(400).json({ message: "Invalid ISBN." });
   } else if (!books[isbn].reviews[user]) {
     res.status(400).json({ message: `${user} hasn't submitted a review for this book.` });
   } else {
@@ -83,3 +77,4 @@ regd_users.delete("/auth/review/:isbn", (req, res) => {
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
 module.exports.users = users;
+
